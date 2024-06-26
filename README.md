@@ -1,88 +1,51 @@
-# Taco Parser Kata
 
-An exercise in geolocation, csv parsing, and logging
+Project Overview
+The goal of this project is to parse a CSV file containing Taco Bell locations, determine the two Taco Bells that are the farthest apart, and display their details.
 
-## Kata Overview
+Key Components
+Data Parsing:
 
-Here's what you'll need to do for this Kata:
+TacoParser class is responsible for parsing each line of the CSV file to create Taco Bell location objects.
+Location Representation:
 
-1. Clone this repo to your machine
-2. Complete all the `TODO`s, while adding appropriate log statements along the way. You can find more details below in the Kata Details section:
-    1. Start with writing a Unit Test to Test the Parse method
-    2. Implement the Parse Method
-    3. Use the [GeoCoordinate.NetCore](https://www.nuget.org/packages/GeoCoordinate.NetCore/) NuGet package to calculate distance between two points
-3. Reduce the logging verbosity and rerun
+Point struct holds latitude and longitude values.
+TacoBell class implements the ITrackable interface and represents a Taco Bell location.
+Distance Calculation:
 
-## Kata Details
+The main program uses the GeoCoordinate class from the GeoCoordinatePortable library to calculate distances between locations.
+Testing:
 
-Here's some more details for completing the steps above.
+TacoParserTests class contains unit tests to ensure the parsing logic works correctly.
+Detailed Breakdown
+TacoParser.cs
+Namespace: LoggingKata
+Class: TacoParser
+Method: Parse(string line)
+Splits the input line into an array of strings.
+Parses latitude, longitude, and name from the array.
+Creates and returns a TacoBell object.
 
-### TacoParser
+Program.cs
+Namespace: LoggingKata
+Main Method:
+Reads lines from the CSV file.
+Parses each line into TacoBell objects using TacoParser.
+Uses nested loops and GeoCoordinate.GetDistanceTo to find the two farthest locations.
+Displays the names and distance of the two farthest Taco Bells.
+TacoParserTests.cs
+Namespace: LoggingKata.Test
+Tests:
+ShouldReturnNonNullObject: Verifies that the parser returns a non-null object.
+ShouldParseLongitude: Verifies that the parser correctly extracts the longitude.
+ShouldParseLatitude: Verifies that the parser correctly extracts the latitude.
 
-Updating the `Parse` method in your `TacoParser`
 
-This method is used to parse a single row from your CSV file as a string and return an ITrackable:
 
-```csharp
-public ITrackable Parse(string line)
-{
-    // Take your line and use line.Split(',') to split it up into an array of strings, separated by the char ','
-    var cells = line.Split(',');
 
-    // If your array.Length is less than 3, something went wrong
-    if (cells.Length < 3)
-    {
-        // Log that and return null
-    }
+Summary
 
-    // grab the latitude from your array at index 0
-    // grab the longitude from your array at index 1
-    // grab the name from your array at index 2
+This project involves parsing a CSV file to create Taco Bell location objects, calculating the distances between these locations to find the farthest pair, and testing the parsing logic to ensure accuracy. The TacoParser class handles the parsing, the main program handles the distance calculation, and unit tests verify the correctness of the parsing logic.
 
-    // Your going to need to parse your string as a `double`
-    // which is similar to parsing a string as an `int`
 
-    // You'll need to create a TacoBell class
-    // that conforms to ITrackable
 
-    // Then, you'll need an instance of the TacoBell class
-    // With the name and point set correctly
 
-    // Then, return the instance of your TacoBell class
-    // Since it conforms to ITrackable
-}
-```
-
-### Program
-
-You now have your `Parse` method working properly. Now, let's get into our Program file in our `Main` static method.
-
-```csharp
-static void Main(string[] args)
-{
-    // DON'T FORGET TO LOG YOUR STEPS
-    // Grab the path from the name of your file
-
-    // use File.ReadAllLines(path) to grab all the lines from your csv file
-    // Log and error if you get 0 lines and a warning if you get 1 line
-
-    // Create a new instance of your TacoParser class
-    // Grab an IEnumerable of locations using the Select command: var locations = lines.Select(parser.Parse);
-
-    // Now, here's the new code
-
-    // Create two `ITrackable` variables with initial values of `null`. These will be used to store your two taco bells that are the furthest from each other.
-    // Create a `double` variable to store the distance
-
-    // Include the Geolocation toolbox, so you can compare locations: `using GeoCoordinatePortable;`
-    // Do a loop for your locations to grab each location as the origin (perhaps: `locA`)
-    // Create a new corA Coordinate with your locA's lat and long
-
-    // Now, do another loop on the locations with the scope of your first loop, so you can grab the "destination" location (perhaps: `locB`)
-    // Create a new Coordinate with your locB's lat and long
-    // Now, compare the two using `.GetDistanceTo()`, which returns a double
-    // If the distance is greater than the currently saved distance, update the distance and the two `ITrackable` variables you set above
-
-    // Once you've looped through everything, you've found the two Taco Bells furthest away from each other.
-}
-```
